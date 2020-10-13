@@ -1,7 +1,7 @@
 #ifndef PARSER_H_
 #define PARSER_H_
 #include "Scanner.h"
-#include "scheme.h"
+#include "Scheme.h"
 #include "DatalogProgram.h"
 
 class Parser {

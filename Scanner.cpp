@@ -10,7 +10,7 @@ void Scanner::scan(string fileName) {
         }
         makeToken(END, line);
         outFile.open("output.txt");
-        for(int i = 0; i < tokenVector.size(); i++) {
+        for(unsigned int i = 0; i < tokenVector.size(); i++) {
             outFile << tokenVector[i].print() << endl;
         }
         outFile << "Total Tokens = " << tokenVector.size();
@@ -184,7 +184,7 @@ void Scanner::makeToken(tokenType type, int lineNum) {
 }
 
 void Scanner::valueToUpper() {
-    for(int i = 0; i < value.length(); i++) {
+    for(unsigned int i = 0; i < value.length(); i++) {
         valueUpper += toupper(value[i]);
     }
 }
