@@ -187,6 +187,7 @@ string Parser::parseOperator() {
     }
     else {
         error();
+        return 0;
     }
 }
 
