@@ -4,7 +4,12 @@
 #include <algorithm>
 #include <iostream>
 
-void Parser::parse() {
+void Parser::parse(string inFile) {
+    lexer.scan(inFile);
+    tokenList = lexer.getVector();
+    tkn = tokenList[0];
+    tokenList.erase(tokenList.begin());
+
     match(SCHEMES);
     match(COLON);
     parseScheme();
@@ -24,23 +29,27 @@ void Parser::parse() {
     parseQuery();
     parseQueryList();
 
-    cout << "Success!\n" << program.toString();
+    schemesList = program.schemesList;
+    factsList = program.factsList;
+    domain = program.domain;
+    rulesList = program.rulesList;
+    queryList = program.queryList;
 }
 
 void Parser::match(tokenType t) {
-    if(tkn.type == t) {
+    if (tkn.type == t) {
         tkn = tokenList[0];
         tokenList.erase(tokenList.begin());
     }
-    else
+    else {
         error();
+    }
 }
 
 void Parser::error() {
     cout << "Failure!\n  " << tkn.print() << endl;
     exit(EXIT_SUCCESS);
 }
-
 
 void Parser::parseScheme() {
     Scheme newScheme(tkn.value);
@@ -50,11 +59,12 @@ void Parser::parseScheme() {
     match(ID);
     newScheme.addParameter(idList());
     match(RIGHT_PAREN);
+
     program.addScheme(newScheme);
 }
 
 void Parser::parseSchemeList() {
-    if(tkn.type != FACTS) {
+    if (tkn.type != FACTS) {
         parseScheme();
         parseSchemeList();
     }
@@ -69,18 +79,19 @@ void Parser::parseFact() {
     newFact.addParameter(stringList());
     match(RIGHT_PAREN);
     match(PERIOD);
+
     program.addFact(newFact);
 }
 
 void Parser::parseFactList() {
-    if(tkn.type != RULES) {
+    if (tkn.type != RULES) {
         parseFact();
         parseFactList();
     }
 }
 
 void Parser::parseRuleList() {
-    if(tkn.type != QUERIES) {
+    if (tkn.type != QUERIES) {
         parseRule();
         parseRuleList();
     }
@@ -90,9 +101,10 @@ void Parser::parseRule() {
     Rule newRule;
     newRule.addHead(headPredicate());
     match(COLON_DASH);
-    newRule.addPred(parsePredicate());
-    newRule.addPred(parsePredicateList());
+    newRule.addPredicate(parsePredicate());
+    newRule.addPredicate(parsePredicateList());
     match(PERIOD);
+
     program.addRule(newRule);
 }
 
@@ -104,12 +116,14 @@ Predicate Parser::headPredicate() {
     match(ID);
     match(LEFT_PAREN);
     initial.value = tkn.value;
+    initial.type = ID;
     newHead.addParameter(initial);
     match(ID);
     temp = idList();
-    for(unsigned int i = 0; i < temp.size(); i++) {
+    for (int i = 0; i < temp.size(); i++) {
         Parameter a;
         a.value = temp[i];
+        a.type = ID;
         pList.push_back(a);
     }
     newHead.addParameter(pList);
@@ -129,7 +143,7 @@ Predicate Parser::parsePredicate() {
 
 vector<Predicate> Parser::parsePredicateList() {
     vector<Predicate> newPredList;
-    if(tkn.type != PERIOD && tkn.type != QUERIES) {
+    if (tkn.type != PERIOD && tkn.type != QUERIES) {
         match(COMMA);
         newPredList.push_back(parsePredicate());
         vector<Predicate> temp = parsePredicateList();
@@ -139,30 +153,33 @@ vector<Predicate> Parser::parsePredicateList() {
 }
 
 Parameter Parser::parseParameter() {
-    Parameter newParam;
-    if(tkn.type == STRING) {
-        newParam.value = tkn.value;
+    Parameter newParameter;
+    if (tkn.type == STRING) {
+        newParameter.value = tkn.value;
+        newParameter.type = STRING;
         match(STRING);
     }
-    else if(tkn.type == ID) {
-        newParam.value = tkn.value;
+    else if (tkn.type == ID) {
+        newParameter.value = tkn.value;
+        newParameter.type = ID;
         match(ID);
     }
     else {
-        newParam.value = parseExpression();
+        newParameter.value = parseExpression();
+        newParameter.value = ID;
     }
-    return newParam;
+    return newParameter;
 }
 
 vector<Parameter> Parser::parseParameterList() {
-    vector<Parameter> newParamList;
-    if(tkn.type != RIGHT_PAREN) {
+    vector<Parameter> newParameterList;
+    if (tkn.type != RIGHT_PAREN) {
         match(COMMA);
-        newParamList.push_back(parseParameter());
+        newParameterList.push_back(parseParameter());
         vector<Parameter> temp = parseParameterList();
-        newParamList.insert(newParamList.end(), temp.begin(), temp.end());
+        newParameterList.insert(newParameterList.end(), temp.begin(), temp.end());
     }
-    return newParamList;
+    return newParameterList;
 }
 
 string Parser::parseExpression() {
@@ -177,17 +194,16 @@ string Parser::parseExpression() {
 }
 
 string Parser::parseOperator() {
-    if(tkn.type == ADD) {
+    if (tkn.type == ADD) {
         match(ADD);
         return "+";
     }
-    else if(tkn.type == MULTIPLY) {
+    else if (tkn.type == MULTIPLY) {
         match(MULTIPLY);
         return "*";
     }
     else {
         error();
-        return 0;
     }
 }
 
@@ -197,16 +213,15 @@ void Parser::parseQuery() {
 }
 
 void Parser::parseQueryList() {
-    if(tkn.type != END) {
+    if (tkn.type != END) {
         parseQuery();
         parseQueryList();
     }
-
 }
 
 vector<string> Parser::idList() {
     vector<string> myList;
-    if(tkn.type != RIGHT_PAREN) {
+    if (tkn.type != RIGHT_PAREN) {
         match(COMMA);
         myList.push_back(tkn.value);
         match(ID);
@@ -218,7 +233,7 @@ vector<string> Parser::idList() {
 
 vector<string> Parser::stringList() {
     vector<string> myList;
-    if(tkn.type != RIGHT_PAREN) {
+    if (tkn.type != RIGHT_PAREN) {
         match(COMMA);
         myList.push_back(tkn.value);
         match(STRING);

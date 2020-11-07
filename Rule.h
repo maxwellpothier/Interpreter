@@ -5,29 +5,28 @@ using namespace std;
 
 class Rule {
 public:
-    Rule(){  }
-    ~Rule(){  }
+    Rule() {  }
+    ~Rule() {  }
     Predicate headPredicate;
-    vector<Predicate> predList;
-    void addHead(Predicate a) {
-        headPredicate = a;
+    vector<Predicate> predicateList;
+    void addHead(Predicate head) {
+        headPredicate = head;
     }
-    void addPred(Predicate x) {
-        predList.push_back(x);
+    void addPredicate(Predicate toAdd) {
+        predicateList.push_back(toAdd);
     }
-    void addPred(vector<Predicate> v) {
-        predList.insert(predList.end(), v.begin(), v.end());
+    void addPredicate(vector<Predicate> predicateVector) {
+        predicateList.insert(predicateList.end(), predicateVector.begin(), predicateVector.end());
     }
     string toString() {
-        string output = headPredicate.toString() + " :- ";
-        for(unsigned int i = 0; i < predList.size()-1; i++) {
-            output += predList[i].toString() + ",";
+        string out = headPredicate.toString() + " :- ";
+        for (int i = 0; i < predicateList.size() - 1; i++) {
+            out += predicateList[i].toString() + ",";
         }
-        output += predList[predList.size()-1].toString();
-        return output;
+        out += predicateList[predicateList.size() - 1].toString();
+        return out;
     }
 };
-
 
 
 #endif /* RULE_H_ */

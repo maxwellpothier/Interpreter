@@ -10,27 +10,26 @@ public:
     Predicate(string n) {
         name = n;
     }
-    Predicate(){  }
-    ~Predicate(){  }
+    Predicate() {  }
+    ~Predicate() {  }
     string name;
     vector<Parameter> parameterList;
-    void addParameter(Parameter param) {
-        parameterList.push_back(param);
+    void addParameter(Parameter parameter) {
+        parameterList.push_back(parameter);
     }
-    void addParameter(vector<Parameter> params) {
-        parameterList.insert(parameterList.end(),params.begin(), params.end());
+    void addParameter(vector<Parameter> parameters) {
+        parameterList.insert(parameterList.end(),parameters.begin(), parameters.end());
     }
     string toString() {
-        string output;
-        output = name + "(";
-        for(unsigned int i = 0; i < parameterList.size()-1; i++) {
-            output = output + parameterList[i].value + ",";
+        string out;
+        out = name + "(";
+        for (int i = 0; i < parameterList.size() - 1; i++) {
+            out = out + parameterList[i].value + ",";
         }
-        output += parameterList[parameterList.size()-1].value + ")";
-        return output;
+        out += parameterList[parameterList.size() - 1].value + ")";
+        return out;
     }
 };
-
 
 
 #endif /* PREDICATE_H_ */

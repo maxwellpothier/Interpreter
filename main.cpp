@@ -1,8 +1,8 @@
-#include "Parser.h"
+#include "Interpreter.h"
 
 int main(int argc, char* argv[]) {
-    Parser p(argv[1]);
-    p.parse();
+    Interpreter i;
+    i.interpret(argv[1]);
 
     return 0;
 }

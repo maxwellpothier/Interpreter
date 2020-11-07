@@ -1,6 +1,7 @@
 #ifndef SCHEME_H_
 #define SCHEME_H_
 #include <string>
+#include <vector>
 using namespace std;
 
 class Scheme {
@@ -8,27 +9,32 @@ public:
     Scheme(string n) {
         name = n;
     }
-    ~Scheme(){  }
+    Scheme() {  }
+    ~Scheme() {  }
     string name;
     vector<string> parameterList;
-    void addParameter(string param) {
-        parameterList.push_back(param);
+    void addName(string n) {
+        name = n;
     }
-    void addParameter(vector<string> params) {
-        parameterList.insert(parameterList.end(),params.begin(), params.end());
+    void addParameter(string parameter) {
+        parameterList.push_back(parameter);
     }
-
+    void addParameter(vector<string> parameters) {
+        parameterList.insert(parameterList.end(), parameters.begin(), parameters.end());
+    }
+    void editParameter(int position, string value) {
+        parameterList[position] = value;
+    }
     string toString() {
-        string output;
-        output = name + "(";
-        for(unsigned int i = 0; i < parameterList.size()-1; i++) {
-            output = output + parameterList[i] + ",";
+        string out;
+        out = name + "(";
+        for (int i = 0; i < parameterList.size() - 1; i++) {
+            out = out + parameterList[i] + ",";
         }
-        output += parameterList[parameterList.size()-1] + ")";
-        return output;
+        out += parameterList[parameterList.size() - 1] + ")";
+        return out;
     }
 };
-
 
 
 #endif /* SCHEME_H_ */

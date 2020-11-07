@@ -5,20 +5,8 @@
 #include <vector>
 
 class Scanner {
-public:
-    Scanner(){  }
-    ~Scanner(){  }
-    void scan(string fileName);
-    void scanToken();
-    void scanID();
-    void scanStr();
-    void scanComm();
-    void makeToken(tokenType type, int lineNum);
-    void valueToUpper();
-    vector<Token> getVector();
-
 private:
-    ifstream file;
+    ifstream inFile;
     ofstream outFile;
     int line = 1;
     char parse;
@@ -26,9 +14,19 @@ private:
     string value = "";
     string valueUpper = "";
     int lineStart = 0;
-    vector<Token> tokenVector;
+    vector<Token> myVector;
+public:
+    Scanner() {  }
+    ~Scanner() {  }
+    void scan(string);
+    void scanToken();
+    void scanID();
+    void scanStr();
+    void scanComm();
+    void makeToken(tokenType type, int lineNum);
+    void valueToUpper();
+    vector<Token> getVector();
 };
-
 
 
 #endif /* SCANNER_H_ */

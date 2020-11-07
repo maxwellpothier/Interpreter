@@ -9,18 +9,15 @@ private:
     vector<Token> tokenList;
     DatalogProgram program;
     Scanner lexer;
-    Token tkn;
 public:
-    Parser(string inputFile) {
-        lexer.scan(inputFile);
-        tokenList = lexer.getVector();
-        tkn = tokenList[0];
-        tokenList.erase(tokenList.begin());
-    }
-    ~Parser(){  }
-    void parse();
-    void match(tokenType);
+    Parser() {  }
+    ~Parser() {  }
+
+    void parse(string);
+    Token getToken();
+    void match(tokenType t);
     void error();
+    void toString();
     void parseScheme();
     void parseSchemeList();
     void parseFactList();
@@ -38,11 +35,14 @@ public:
     void parseQueryList();
     vector<string> idList();
     vector<string> stringList();
+
+    Token tkn;
+    vector<Scheme> schemesList;
+    vector<Scheme> factsList;
+    vector<string> domain;
+    vector<Rule> rulesList;
+    vector<Predicate> queryList;
 };
-
-
-
-
 
 
 #endif /* PARSER_H_ */

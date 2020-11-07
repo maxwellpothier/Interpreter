@@ -2,21 +2,21 @@
 #include <sstream>
 #include <algorithm>
 
-void DatalogProgram::addScheme(Scheme s) {
-    schemesList.push_back(s);
+void DatalogProgram::addScheme(Scheme scheme) {
+    schemesList.push_back(scheme);
 }
 
-void DatalogProgram::addFact(Scheme f) {
-    factsList.push_back(f);
-    domain.insert(domain.end(), f.parameterList.begin(), f.parameterList.end());
+void DatalogProgram::addFact(Scheme fact) {
+    factsList.push_back(fact);
+    domain.insert(domain.end(), fact.parameterList.begin(), fact.parameterList.end());
 }
 
-void DatalogProgram::addRule(Rule r) {
-    rulesList.push_back(r);
+void DatalogProgram::addRule(Rule rule) {
+    rulesList.push_back(rule);
 }
 
-void DatalogProgram::addQuery(Predicate p) {
-    queryList.push_back(p);
+void DatalogProgram::addQuery(Predicate predicate) {
+    queryList.push_back(predicate);
 }
 
 void DatalogProgram::makeDomain() {
@@ -25,33 +25,32 @@ void DatalogProgram::makeDomain() {
 }
 
 string DatalogProgram::toString() {
-    string output;
-    output = "Schemes(" + intToString(schemesList.size()) + "):\n";
-    for(unsigned int i = 0; i < schemesList.size(); i++) {
-        output += "  " + schemesList[i].toString() + "\n";
+    string out;
+    out = "Schemes(" + intToString(schemesList.size()) + "):\n";
+    for (int i = 0; i < schemesList.size(); i++) {
+        out += "  " + schemesList[i].toString() + "\n";
     }
-    output += "Facts(" + intToString(factsList.size()) +  "):\n";
-    for(unsigned int i = 0; i < factsList.size(); i++) {
-        output += "  " + factsList[i].toString() + ".\n";
+    out += "Facts(" + intToString(factsList.size()) +  "):\n";
+    for (int i = 0; i < factsList.size(); i++) {
+        out += "  " + factsList[i].toString() + ".\n";
     }
-    output += "Rules(" + intToString(rulesList.size()) + "):\n";
-    for(unsigned int i = 0; i < rulesList.size(); i++) {
-        output += "  " + rulesList[i].toString() + ".\n";
+    out += "Rules(" + intToString(rulesList.size()) + "):\n";
+    for (int i = 0; i < rulesList.size(); i++) {
+        out += "  " + rulesList[i].toString() + ".\n";
     }
-    output += "Queries(" + intToString(queryList.size()) + "):\n";
-    for(unsigned int i = 0; i < queryList.size(); i++) {
-        output += "  " + queryList[i].toString() + "?\n";
+    out += "Queries(" + intToString(queryList.size()) + "):\n";
+    for (int i = 0; i < queryList.size(); i++) {
+        out += "  " + queryList[i].toString() + "?\n";
     }
-    output += "Domain(" + intToString(domain.size()) + "):\n";
-    for(unsigned int i = 0; i < domain.size(); i++) {
-        output += "  " + domain[i] + "\n";
+    out += "Domain(" + intToString(domain.size()) + "):\n";
+    for (int i = 0; i < domain.size(); i++) {
+        out += "  " + domain[i] + "\n";
     }
-    return output;
+    return out;
 }
 
-string DatalogProgram::intToString(int x) {
-    stringstream convert;
-    convert << x;
-    string output = convert.str();
-    return output;
+string DatalogProgram::intToString(int toConvert) {
+    ostringstream oss;
+    oss << toConvert;
+    return oss.str();
 }

@@ -1,31 +1,32 @@
 #include "Scanner.h"
+#include <fstream>
 #include <cctype>
 #include <iostream>
 
-void Scanner::scan(string fileName) {
-    file.open(fileName.c_str());
-    if(file) {
-        while(file.get(parse)) {
+void Scanner::scan(string file) {
+    inFile.open(file.c_str());
+    if (inFile) {
+        while (inFile.get(parse)) {
             scanToken();
         }
         makeToken(END, line);
         outFile.open("output.txt");
-        for(unsigned int i = 0; i < tokenVector.size(); i++) {
-            outFile << tokenVector[i].print() << endl;
+        for (int i = 0; i < myVector.size(); i++) {
+            outFile << myVector[i].print() << endl;
         }
-        outFile << "Total Tokens = " << tokenVector.size();
+        outFile << "Total Tokens = " << myVector.size();
         outFile.close();
     }
     else {
-        cout << "File did not load"<< endl;
+        cout << "File did not load" << endl;
     }
 }
 
 void Scanner::scanToken() {
-    while(isspace(parse)) {
-        if(parse == '\n') line++;
-        file.get(parse);
-        if(file.eof()) break;
+    while (isspace(parse)) {
+        if (parse == '\n') line++;
+        inFile.get(parse);
+        if(inFile.eof()) break;
     }
     switch (parse) {
         case ',':
@@ -58,11 +59,11 @@ void Scanner::scanToken() {
             break;
         case ':':
             value = ":";
-            next = file.peek();
-            if(next == '-') {
+            next = inFile.peek();
+            if (next == '-') {
                 value = ":-";
                 makeToken(COLON_DASH, line);
-                file.get(parse);
+                inFile.get(parse);
             }
             else {
                 makeToken(COLON, line);
@@ -75,8 +76,8 @@ void Scanner::scanToken() {
             scanComm();
             break;
         default:
-            if(isalpha(parse)) scanID();
-            else if(!file.eof()) {
+            if (isalpha(parse)) scanID();
+            else if (!inFile.eof()) {
                 value += parse;
                 makeToken(UNDEFINED, line);
             }
@@ -86,16 +87,16 @@ void Scanner::scanToken() {
 
 void Scanner::scanID() {
     value += parse;
-    file.get(parse);
-    while(isalnum(parse)) {
+    inFile.get(parse);
+    while (isalnum(parse)) {
         value += parse;
-        file.get(parse);
+        inFile.get(parse);
     }
     valueToUpper();
-    if(valueUpper == "SCHEMES") makeToken(SCHEMES, line);
-    else if(valueUpper == "FACTS") makeToken(FACTS, line);
-    else if(valueUpper == "RULES") makeToken(RULES, line);
-    else if(valueUpper == "QUERIES") makeToken(QUERIES, line);
+    if (valueUpper == "SCHEMES") makeToken(SCHEMES, line);
+    else if (valueUpper == "FACTS") makeToken(FACTS, line);
+    else if (valueUpper == "RULES") makeToken(RULES, line);
+    else if (valueUpper == "QUERIES") makeToken(QUERIES, line);
     else makeToken(ID, line);
     scanToken();
 }
@@ -104,13 +105,13 @@ void Scanner::scanStr() {
     bool endOfString = false;
     value += parse;
     lineStart = line;
-    while(endOfString == false) {
-        if(file.peek() == -1) {
+    while (endOfString == false) {
+        if (inFile.peek() == -1) {
             makeToken(UNDEFINED, lineStart);
             endOfString = true;
         }
         else {
-            file.get(parse);
+            inFile.get(parse);
             switch(parse) {
                 case '\n':
                     line++;
@@ -118,13 +119,13 @@ void Scanner::scanStr() {
                     break;
                 case '\'':
                     value += parse;
-                    next = file.peek();
-                    if(next != '\'') {
+                    next = inFile.peek();
+                    if (next != '\'') {
                         makeToken(STRING, lineStart);
                         endOfString = true;
                     }
                     else {
-                        file.get(parse);
+                        inFile.get(parse);
                         value += parse;
                     }
                     break;
@@ -139,56 +140,52 @@ void Scanner::scanStr() {
 void Scanner::scanComm() {
     value += parse;
     lineStart = line;
-    next = file.peek();
-    if(next != '|') {
-        file.get(parse);
-        while(parse != '\n') {
+    next = inFile.peek();
+    if (next != '|') {
+        inFile.get(parse);
+        while (parse != '\n') {
             value += parse;
-            file.get(parse);
+            inFile.get(parse);
         }
-        if(parse == '\n') {
-            line++;
-        }
+        if (parse == '\n') line++;
         makeToken(COMMENT, lineStart);
     }
     else {
-        file.get(parse);
+        inFile.get(parse);
         value += parse;
-        file.get(parse);
-        next = file.peek();
-        while((parse != '|' || next != '#') && !file.eof()) {
-            if(parse == '\n') line++;
+        inFile.get(parse);
+        next = inFile.peek();
+        while ((parse != '|' || next != '#') && !inFile.eof()) {
+            if (parse == '\n') line++;
             value += parse;
-            file.get(parse);
-            next = file.peek();
+            inFile.get(parse);
+            next = inFile.peek();
         }
-        if(parse == '|' && next == '#') {
+        if (parse == '|' && next == '#') {
             value += parse;
-            file.get(parse);
+            inFile.get(parse);
             value += parse;
             makeToken(COMMENT, lineStart);
         }
-        else if(file.eof()) {
-            makeToken(UNDEFINED, lineStart);
-        }
+        else if (inFile.eof()) makeToken(UNDEFINED, lineStart);
     }
 }
 
 void Scanner::makeToken(tokenType type, int lineNum) {
     Token newToken(type, value, lineNum);
-    if(type != COMMENT) {
-        tokenVector.push_back(newToken);
+    if (type != COMMENT) {
+        myVector.push_back(newToken);
     }
     value = "";
     valueUpper = "";
 }
 
 void Scanner::valueToUpper() {
-    for(unsigned int i = 0; i < value.length(); i++) {
+    for (int i = 0; i < value.length(); i++) {
         valueUpper += toupper(value[i]);
     }
 }
 
 vector<Token> Scanner::getVector() {
-    return tokenVector;
+    return myVector;
 }

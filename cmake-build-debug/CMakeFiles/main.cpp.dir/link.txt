@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/c++  -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/main.cpp.dir/Parser.cpp.o CMakeFiles/main.cpp.dir/DatalogProgram.cpp.o CMakeFiles/main.cpp.dir/Scanner.cpp.o CMakeFiles/main.cpp.dir/Token.cpp.o  -o main.cpp 
