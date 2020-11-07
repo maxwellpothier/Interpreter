@@ -1,3 +1,0 @@
-/Users/maxpothier/Desktop/CS236/lab3-interpreter/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/maxpothier/Desktop/CS236/lab3-interpreter/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/maxpothier/Desktop/CS236/lab3-interpreter/cmake-build-debug/CMakeFiles/sandbox.dir
