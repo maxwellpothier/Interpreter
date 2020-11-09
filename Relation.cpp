@@ -48,7 +48,7 @@ Relation Relation::project(vector<int> position) {
     if (!position.empty()) {
         for (set<Tuple>::iterator i = tupleList.begin(); i != tupleList.end(); ++i) {
             Tuple temp;
-            for(int j = 0; j < position.size(); j++) {
+            for(unsigned int j = 0; j < position.size(); j++) {
                 temp.push_back((*i)[position[j] + 1]);
             }
             newRelation.addTuple(temp);

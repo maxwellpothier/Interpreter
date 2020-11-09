@@ -28,7 +28,7 @@ public:
     string toString() {
         string out;
         out = name + "(";
-        for (int i = 0; i < parameterList.size() - 1; i++) {
+        for (unsigned int i = 0; i < parameterList.size() - 1; i++) {
             out = out + parameterList[i] + ",";
         }
         out += parameterList[parameterList.size() - 1] + ")";

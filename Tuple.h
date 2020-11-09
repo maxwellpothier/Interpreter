@@ -8,7 +8,7 @@ class Tuple : public vector<string> {
 public:
     Tuple(Scheme scheme) {
         push_back(scheme.name);
-        for (int i = 0; i < scheme.parameterList.size(); i++) {
+        for (unsigned int i = 0; i < scheme.parameterList.size(); i++) {
             push_back(scheme.parameterList[i]);
         }
     }

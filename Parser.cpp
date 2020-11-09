@@ -120,7 +120,7 @@ Predicate Parser::headPredicate() {
     newHead.addParameter(initial);
     match(ID);
     temp = idList();
-    for (int i = 0; i < temp.size(); i++) {
+    for (unsigned int i = 0; i < temp.size(); i++) {
         Parameter a;
         a.value = temp[i];
         a.type = ID;
@@ -204,6 +204,7 @@ string Parser::parseOperator() {
     }
     else {
         error();
+	return 0;
     }
 }
 

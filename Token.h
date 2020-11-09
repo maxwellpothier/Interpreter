@@ -13,7 +13,10 @@ private:
     int line;
     map<tokenType, string> tokenMap;
 public:
-    Token(tokenType t, string v, int l): type(t), value(v), line(l) {
+    Token(tokenType t, string v, int l) {
+	type = t;
+	value = v;
+	line = l;
         tokenMap[COMMA] = "COMMA";
         tokenMap[PERIOD] = "PERIOD";
         tokenMap[Q_MARK] = "Q_MARK";

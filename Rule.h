@@ -20,7 +20,7 @@ public:
     }
     string toString() {
         string out = headPredicate.toString() + " :- ";
-        for (int i = 0; i < predicateList.size() - 1; i++) {
+        for (unsigned int i = 0; i < predicateList.size() - 1; i++) {
             out += predicateList[i].toString() + ",";
         }
         out += predicateList[predicateList.size() - 1].toString();

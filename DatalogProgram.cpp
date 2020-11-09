@@ -27,23 +27,23 @@ void DatalogProgram::makeDomain() {
 string DatalogProgram::toString() {
     string out;
     out = "Schemes(" + intToString(schemesList.size()) + "):\n";
-    for (int i = 0; i < schemesList.size(); i++) {
+    for (unsigned int i = 0; i < schemesList.size(); i++) {
         out += "  " + schemesList[i].toString() + "\n";
     }
     out += "Facts(" + intToString(factsList.size()) +  "):\n";
-    for (int i = 0; i < factsList.size(); i++) {
+    for (unsigned int i = 0; i < factsList.size(); i++) {
         out += "  " + factsList[i].toString() + ".\n";
     }
     out += "Rules(" + intToString(rulesList.size()) + "):\n";
-    for (int i = 0; i < rulesList.size(); i++) {
+    for (unsigned int i = 0; i < rulesList.size(); i++) {
         out += "  " + rulesList[i].toString() + ".\n";
     }
     out += "Queries(" + intToString(queryList.size()) + "):\n";
-    for (int i = 0; i < queryList.size(); i++) {
+    for (unsigned int i = 0; i < queryList.size(); i++) {
         out += "  " + queryList[i].toString() + "?\n";
     }
     out += "Domain(" + intToString(domain.size()) + "):\n";
-    for (int i = 0; i < domain.size(); i++) {
+    for (unsigned int i = 0; i < domain.size(); i++) {
         out += "  " + domain[i] + "\n";
     }
     return out;
